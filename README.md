@@ -7,11 +7,11 @@ Then install all dependencies with:
 pip install -r requirements.txt
 ```
 __Usage:__
-* Start train pipline:
+* Start train pipeline:
 ```
 python projectname/train_pipeline.py
 ```
-* Start predict pipline:
+* Start predict pipeline:
 ```
 python projectname/predict_pipeline.py predict_params.path_to_data={your data} predict_params.path_to_model={model to use} predict_params.output_path={to store results}
 ```
