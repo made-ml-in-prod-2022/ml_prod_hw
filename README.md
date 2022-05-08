@@ -17,6 +17,7 @@ python projectname/predict_pipeline.py predict_params.path_to_data={your data} p
 ```
 ---
 # Project Organization
+```bash
 .
 ├── README.md
 ├── configs
@@ -46,3 +47,4 @@ python projectname/predict_pipeline.py predict_params.path_to_data={your data} p
 │   ├── predict_pipeline.py
 │   └── train_pipeline.py
 └── requirements.txt
+```
