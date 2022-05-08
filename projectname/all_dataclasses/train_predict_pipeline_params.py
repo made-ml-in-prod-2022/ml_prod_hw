@@ -1,8 +1,5 @@
-from dataclasses import dataclass, field
 from typing import Tuple
-
-import hydra
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 
 from .splitting_params import SplittingParams
 from .training_params import TrainParams
@@ -19,5 +16,3 @@ def set_parametrs(cfg: DictConfig) -> Tuple[TrainParams, SplittingParams, Pathes
     split_params = SplittingParams(**cfg.splitting_params)
     pathes_params = PathesParams(**cfg.pathes)
     return train_params, split_params, pathes_params
-
-

@@ -2,10 +2,10 @@ import sys
 import torch
 import hydra
 import logging
-from omegaconf import DictConfig, OmegaConf
-from  hydra.utils import get_original_cwd
+from omegaconf import DictConfig
+from hydra.utils import get_original_cwd
 
-from  all_dataclasses.train_predict_pipeline_params import set_predict_parametrs
+from all_dataclasses.train_predict_pipeline_params import set_predict_parametrs
 from build_ds.build_dataset import download_data_and_build_predict_dataloader
 from model_code.train_predict_eval import predict
 from model_code.train_predict_eval import load_model
@@ -22,7 +22,7 @@ logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
 
 
-@hydra.main(config_path='../configs', config_name="config")
+@hydra.main(config_path="../configs", config_name="config")
 def predict_pipeline(cfg: DictConfig) -> None:
 
     predict_params = set_predict_parametrs(cfg)
@@ -42,10 +42,10 @@ def predict_pipeline(cfg: DictConfig) -> None:
     predict_scores = predict(model, pred_loader, device)
     logger.info(f"predict scores size {predict_scores.shape}")
 
-    file_path = f'{get_original_cwd()}/{predict_params.output_path}'
+    file_path = f"{get_original_cwd()}/{predict_params.output_path}"
     if "win" in sys.platform:
-        file_path = '\\'.join(file_path.split('/'))
-    
+        file_path = "\\".join(file_path.split("/"))
+
     res_path = save_results(predict_scores, file_path)
     return res_path
 

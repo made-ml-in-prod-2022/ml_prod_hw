@@ -1,4 +1,3 @@
-
 from .train_predict_pipeline_params import set_parametrs
 from .train_predict_pipeline_params import set_predict_parametrs
 from .splitting_params import SplittingParams
@@ -12,4 +11,5 @@ __all__ = [
     "PathesParams",
     "TrainParams",
     "set_predict_parametrs",
-    "PredictParams"]
+    "PredictParams",
+]

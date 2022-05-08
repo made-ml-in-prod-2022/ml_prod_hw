@@ -4,15 +4,11 @@ import torch
 import numpy as np
 import pickle
 import logging
-import pandas as pd
 from sklearn.metrics import accuracy_score
 import torch.nn.functional as F
 from torch import optim
 from torch import nn
 from torch.utils.data import DataLoader
-import torch.utils.data as data
-from torch.utils.data import random_split
-from dataclasses import dataclass, field
 
 from all_dataclasses.training_params import TrainParams
 
@@ -56,7 +52,7 @@ def check_accuracy(loader: DataLoader, model: NN, device: int) -> float:
             num_samples += predictions.size(0)
 
     model.train()
-    return num_correct/num_samples
+    return num_correct / num_samples
 
 
 def predict(model: NN, loader: DataLoader, device: int) -> np.array:
@@ -91,11 +87,22 @@ def serialize_model(model: torch.nn, output: str) -> str:
     return output
 
 
-def train_model(train_loader: DataLoader, test_loader: DataLoader, train_params: TrainParams, device: int) -> NN:
+def train_model(
+    train_loader: DataLoader,
+    test_loader: DataLoader,
+    train_params: TrainParams,
+    device: int,
+) -> NN:
     torch.manual_seed(train_params.SEED)
-    model = NN(input_size=train_params.input_size, num_classes=train_params.num_classes).to(device)
+    model = NN(
+        input_size=train_params.input_size, num_classes=train_params.num_classes
+    ).to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=train_params.learning_rate, weight_decay=train_params.weight_decay)
+    optimizer = optim.Adam(
+        model.parameters(),
+        lr=train_params.learning_rate,
+        weight_decay=train_params.weight_decay,
+    )
     # optimizer = optim.SGD(model.parameters(), nesterov=True, momentum=0.9, lr=0.1, weight_decay=0.0001)
 
     train_acc = []
@@ -130,6 +137,7 @@ def load_model(path: str) -> NN:
     with open(path, "rb") as f:
         loaded_model = pickle.load(f)
     return loaded_model
+
 
 def save_results(scores: np.array, path: str) -> str:
     logger.info(f"Resuls saved in {path}")
