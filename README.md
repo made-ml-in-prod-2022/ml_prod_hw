@@ -24,9 +24,9 @@ python projectname/predict_pipeline.py predict_params.path_to_data={your data} p
 ├── README.md
 ├── configs
 │   └── config.yaml
-├── github
-│   └── workflow
-│       └── checking.yaml
+├── .github
+│   └── workflows
+│       └── main.yml
 ├── models
 ├── notebooks
 │   └── hw1_prod.ipynb
