@@ -1,5 +1,6 @@
 # ML Project
 ---
+[![build status](https://github.com/made-ml-in-prod-2022/ml_prod_hw/actions/workflows/main.yml/badge.svg)](https://github.com/made-ml-in-prod-2022/ml_prod_hw/actions/workflows/main.yml)
 __Installation:__
 Start your venv.
 Then install all dependencies with:
