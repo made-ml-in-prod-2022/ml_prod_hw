@@ -1,6 +1,6 @@
-FROM python:3.9
+FROM python:3.6-slim-stretch
 
-RUN mkdir -p /project
+RUN mkdir -p /project && mkdir /project/model
 
 WORKDIR /project
 
