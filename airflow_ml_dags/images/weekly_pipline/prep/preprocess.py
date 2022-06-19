@@ -16,6 +16,8 @@ args = parser.parse_args()
 x = pd.read_csv(args.data_file + "/data.csv")
 y = pd.read_csv(args.data_file + "/target.csv")
 
+x = (x - x.mean()) / x.std()
+
 x['target'] = y['Target'].values
 
 if not os.path.isdir('/'.join(args.otput_file.split("/")[:-1])):

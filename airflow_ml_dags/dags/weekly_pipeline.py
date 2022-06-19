@@ -4,6 +4,7 @@ from datetime import timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
 from airflow.providers.docker.operators.docker import DockerOperator
+from airflow.sensors.filesystem import FileSensor
 from airflow.utils.dates import days_ago
 from docker.types import Mount
 
@@ -13,6 +14,14 @@ default_args = {
     "retries": 1,
     "retry_delay": timedelta(seconds=5),
 }
+
+
+def _wait_for_split_data():
+    return os.path.exists("/opt/airflow/data/split/{{ ds }}/x_train.csv")\
+            and os.path.exists("/opt/airflow/data/split/{{ ds }}/x_test.csv")\
+            and os.path.exists("/opt/airflow/data/split/{{ ds }}/y_train.csv")\
+            and os.path.exists("/opt/airflow/data/split/{{ ds }}/y_test.csv")
+
 
 with DAG(
         "weekly_pipeline",
@@ -63,5 +72,33 @@ with DAG(
         mounts=[Mount(source="/home/dedperded/experiments/airflow-examples/data/", target="/data", type='bind')]
     )
 
-    start >> data_prep >> data_split >> train >> val
+    wait_for_train_data = FileSensor(
+        task_id="waiting_for_train_data",
+        filepath="split/{{ ds }}/x_train.csv",
+        fs_conn_id="train_data",
+        poke_interval=10
+    )
+
+    wait_for_train_target = FileSensor(
+        task_id="wait_for_train_target",
+        filepath="split/{{ ds }}/y_train.csv",
+        fs_conn_id="train_data",
+        poke_interval=10
+    )
+
+    wait_for_test_data = FileSensor(
+        task_id="wait_for_test_data",
+        filepath="split/{{ ds }}/x_test.csv",
+        fs_conn_id="train_data",
+        poke_interval=10
+    )
+
+    wait_for_test_target = FileSensor(
+        task_id="wait_for_test_target",
+        filepath="split/{{ ds }}/y_test.csv",
+        fs_conn_id="train_data",
+        poke_interval=10
+    )
+
+    start >> data_prep >> data_split >> wait_for_train_data >> wait_for_train_target >> train >> wait_for_test_data >> wait_for_test_target >> val
 
