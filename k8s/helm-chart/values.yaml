@@ -1,0 +1,14 @@
+
+
+app:
+  name: fastapi-ml
+
+container:
+  image: iqgroper/ml_prod_hw:latest
+
+deployment:
+  replica_count: 2
+  
+  rollingUpdate_config:
+      maxSurge: 2
+      maxUnavailable: 1

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-ml
+  labels:
+    app: fastapi-ml
+spec:
+  replicas: {{ .Values.deployment.replica_count }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.deployment.rollingUpdate_config.maxSurge }}
+      maxUnavailable: {{ .Values.deployment.rollingUpdate_config.maxUnavailable }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  template:
+    metadata:
+      name: fastapi-ml
+      labels:
+        app: fastapi-ml
+    spec:
+      containers:
+        - image: {{ .Values.container.image }}
+          name: fastapi-ml
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 1

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fastapi-ml
+  labels:
+    app: fastapi-ml
+spec:
+  containers:
+    - image: iqgroper/ml_prod_hw:latest
+      name: fastapi-ml
+      ports:
+        - containerPort: 8000
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "50m"
+        limits:
+          memory: "1Gi"
+          cpu: "500m"
+      readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 1
