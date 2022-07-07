@@ -1,4 +1,4 @@
-name: linters check
+name: linters-check
 
 on: push
 
